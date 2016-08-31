@@ -5,7 +5,7 @@ public class EnemyCtrl : MonoBehaviour {
 	EnemyStatus status;
 	EnemyAnimation enemyAnimation;
 	EnemyMove enemyMove;
-	Transform attackTarget;
+	Transform attackTarget; //攻撃対象の座標
 	// 待機時間
 	public float waitBaseTime = 2.0f;
 	// 残り待機時間
@@ -126,7 +126,7 @@ public class EnemyCtrl : MonoBehaviour {
 	// 追跡開始
 	void ChaseStart()
 	{
-		StateStartCommon();
+		StateStartCommon();//このスクリプトの下の方にあります
 	}
 	// 追跡中
 	void Chasing()
@@ -146,17 +146,17 @@ public class EnemyCtrl : MonoBehaviour {
 		StateStartCommon();
 		status.attacking = true;
 
-		// 敵の方向に振り向かせる.EnemyMoveスクリプト
+		// 敵をこちらに向かせる.EnemyMoveスクリプト
 		Vector3 targetDirection = (attackTarget.position-transform.position).normalized;
 		enemyMove.SetDiection (targetDirection);
 		//SendMessage("SetDirection",targetDirection);
 
-		// 移動を止める.EnemyMoveスクリプト
+		// 移動を止める.EnemyMoveスクリプト（攻撃の瞬間だけ一瞬止まる）
 		enemyMove.StopMove();
 		//SendMessage("StopMove");
 	}
 
-	// 攻撃中の処理.
+	// 攻撃後の処理.
 	void Attacking()
 	{
 		if (enemyAnimation.IsAttacked())

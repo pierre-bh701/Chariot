@@ -8,10 +8,10 @@ public class PlayerAnimation : MonoBehaviour {
 	public float chargeSpeed = 10.0f;//突進時のスピード
 	public float chargeCount = 10.0f;//突進時間
 	public bool charge = false;//突進スイッチ
-	public float gravity = 20.0f;//重力
+	public float gravity = 20.0f;//重力（未使用）
 	private Vector3 moveDirection = Vector3.zero; //左右移動
 	//private bool DirectionRotationFlag = false;//円周進行
-	public float DirectionAxis = 0; //強制進行方向制御
+	public float DirectionAxis = 0; //強制進行方向制御（未使用）
 
 	//機体の変形関連(ボーン)
 	public GameObject body;//機体全体(車輪軸を軸に回転)
@@ -19,6 +19,8 @@ public class PlayerAnimation : MonoBehaviour {
 	public GameObject wheelL;//左車輪
 	public GameObject wheelR;//右車輪
 	private Vector3 wheelRotation;//車輪の回転用
+
+	CharacterController controller;
 
 	private Animator animator;
 
@@ -34,14 +36,14 @@ public class PlayerAnimation : MonoBehaviour {
 	void EndChargeHitHit(){
 		Debug.Log ("EndAttackHit");
 	}
-
-	void Defeated(){//倒れるアニメーションで、この関数を呼び出す。
+	void Defeated(){ //倒れるアニメーションで、この関数を呼び出す。
 		Debug.Log ("Defeated");
 	}
 
 	void Start () {
 		animator = GetComponent<Animator> ();
 		status = GetComponent<PlayerStatus> ();
+		controller = GetComponent<CharacterController> ();
 	}
 
 	float Angle180(float a)
@@ -63,11 +65,9 @@ public class PlayerAnimation : MonoBehaviour {
 	//第２引数から見た、第１引数までの差をとる。(100,-30)なら-130、(-30,100)なら130を返す。
 
 	void Update () {
-		CharacterController controller = GetComponent<CharacterController> ();
 
 		float angle = Angle180 (transform.rotation.eulerAngles.y);//機体の向き
 		DirectionAxis = Angle180 (DirectionAxis);//機体の強制進行方向(道に沿わせる)
-
 
 		wheelRotation = new Vector3 (5f, 0, 0) * speed; 
 		wheelL.transform.Rotate (wheelRotation);//左輪
@@ -131,7 +131,7 @@ public class PlayerAnimation : MonoBehaviour {
 					speed = 0.0f;
 				}
 			}
-			//ブレーキ
+			//ブレーキ（後退はしない）
 
 			if (!Input.GetKey ("w") && !Input.GetKey ("s")) {
 				if (speed > 4.0f) {
