@@ -117,9 +117,9 @@ public class CameraAndShotController : MonoBehaviour {
 
 	void OnGUI() //カーソルに画像を貼る
 	{
-		xMin = Screen.width - (Screen.width - Input.mousePosition.x) - (crosshairImage.width / 8);
-		yMin = (Screen.height - Input.mousePosition.y) - (crosshairImage.height / 8);
-		GUI.DrawTexture(new Rect(xMin, yMin, crosshairImage.width / 4, crosshairImage.height / 4), crosshairImage);
+		xMin = Screen.width - (Screen.width - Input.mousePosition.x) - (crosshairImage.width / 4);
+		yMin = (Screen.height - Input.mousePosition.y) - (crosshairImage.height / 4);
+		GUI.DrawTexture(new Rect(xMin, yMin, crosshairImage.width / 2, crosshairImage.height / 2), crosshairImage);
 
 	}
 }
