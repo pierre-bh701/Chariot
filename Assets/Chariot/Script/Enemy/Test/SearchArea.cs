@@ -13,7 +13,7 @@ public class SearchArea : MonoBehaviour {
 	void OnTriggerStay(Collider other){
 		//Debug.Log ("Look"+other.tag);
 		if (other.tag == "Player") {
-			enemyCtrl.SetAttackTarget (other.transform);
+			enemyCtrl.SetAttackTarget (other.transform); //ターゲットをプレイヤーに指定
 		}
 	}
 }

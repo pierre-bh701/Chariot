@@ -46,14 +46,14 @@ public class EnemyAnimation : MonoBehaviour {
 		//前回のUpdateからの移動量を計算して、Speedパラメータの値を設定している
 		Vector3 deltaPosition = transform.position - prePosition;
 
-		animator.SetFloat ("Speed", deltaPosition.magnitude / Time.deltaTime);
+		animator.SetFloat ("Speed", deltaPosition.magnitude / Time.deltaTime); //走る速さを調整
 
 
 		if (attacked && !status.attacking) {
 			attacked = false;
 		}
 
-		animator.SetBool ("Attacking", (!attacked && status.attacking));
+		animator.SetBool ("Attacking", (!attacked && status.attacking)); //アニメーションの分岐判定
 
 		//Enemystatus.diedがtrueになったとき、PlayerAnimatorController内のDownパラメータがtrueになり、倒れるアニメーションが再生される
 		if (!isDown && status.died) {

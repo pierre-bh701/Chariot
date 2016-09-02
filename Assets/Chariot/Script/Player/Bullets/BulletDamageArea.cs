@@ -32,18 +32,18 @@ public class BulletDamageArea : MonoBehaviour {
 	//攻撃が当たった
 	void OnTriggerEnter(Collider other){
 		//攻撃が当たった相手のDamageメッセージを送る
-		if (other.tag == "Enemy") {
-			other.SendMessage ("Damage", GetAttackInfo ());
+		if (other.tag == "Enemy") { //ぶつかった対象のタグがEnemyだったら
+			other.SendMessage ("Damage", GetAttackInfo ()); //otherのDamage関数にGetAttackInfo()を与える
 		}
-		Destroy (gameObject);
+		Destroy (gameObject); //消すかどうかは玉によるかも
 	}
 
-	//攻撃判定を有効化
+	//攻撃判定を有効化（玉によって変更する場合に使おう）
 	void OnAttack(){
 		damageArea.enabled = true;
 	}
 
-	//攻撃判定を無効化
+	//攻撃判定を無効化（玉によって変更する場合に使おう）
 	void OnAttackTermination(){
 		damageArea.enabled = false;
 	}

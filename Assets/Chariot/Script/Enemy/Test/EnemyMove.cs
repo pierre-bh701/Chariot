@@ -6,7 +6,7 @@ public class EnemyMove : MonoBehaviour {
 	const float GravityPower = 9.8f;//重力値
 	const float StoppingDistance = 0.6f;//目的地に着いたとみなす停止距離
 
-	Vector3 velocity = Vector3.zero;//現在の移動速度
+	Vector3 velocity = Vector3.zero;//現在の移動速度（読み取り用、これに応じてモーションを変えたりする）
 	CharacterController characterController;//キャラクターコントローラーのキャッシュ
 	public bool arrived = false;//到着したか(到着した = true / 到着していない = false)
 
@@ -36,7 +36,7 @@ public class EnemyMove : MonoBehaviour {
 			Vector3 direction = (destinationXZ - transform.position).normalized;
 			float distance = Vector3.Distance (transform.position, destinationXZ);
 
-			//現在の速度を退避
+			//現在の速度を退避（取り置き）
 			Vector3 currentVelocity = velocity;
 
 			//目的地に近づいたら到着
@@ -67,7 +67,7 @@ public class EnemyMove : MonoBehaviour {
 				transform.rotation = Quaternion.RotateTowards (transform.rotation, characterTargetRotation, rotationSpeed * Time.deltaTime);
 				}
 			}
-		//重力
+		//重力加速度を速度に加算
 		velocity += Vector3.down * GravityPower * Time.deltaTime;
 
 		//接地していたら、強く地面に押し付ける(接地判定を強める)(浮いている敵も同様)
@@ -78,19 +78,19 @@ public class EnemyMove : MonoBehaviour {
 		}
 
 			//CharacterControllerを使って動かす
-		characterController.Move(velocity * Time.deltaTime+snapGround);//計算怪しい？
+		characterController.Move(velocity * Time.deltaTime+snapGround);
 
-			//強制的に向きを変えるのを解除
+			//強制的に向きを変えるのを解除（同じ向きを向いていたらForceRotateを解除）
 		if (forceRotate && Vector3.Dot (transform.forward, forceRotateDirection) > 0.99f) {
 			forceRotate = false;
 		}
 	}
 
-	//壁にぶつかったら止めて、目的地を再配置
+	//壁にぶつかったら止めて、目的地を再配置（壁の向こうに目的地があった場合に延々と移動しようとし続けるのを回避）
 	void OnTriggerStay(Collider other){
 		if (other.tag == "Wall") {
 			arrived = true;
-			arrived = false;
+			arrived = false;//こっちいらないかも
 		}
 	}
 
@@ -100,7 +100,7 @@ public class EnemyMove : MonoBehaviour {
 		this.destination = destination;
 	}
 
-	//指定した向きを向かせる
+	//指定した向きを向かせる（EnemyControllのAttackStartに使われてる）
 	public void SetDiection(Vector3 direction){
 		forceRotateDirection = direction;
 		forceRotateDirection.y = 0;
@@ -108,7 +108,7 @@ public class EnemyMove : MonoBehaviour {
 		forceRotate = true;
 	}
 
-	//移動を止める
+	//移動を止める（EnemyControllのAttackStartに使われてる）
 	public void StopMove(){
 		destination = transform.position; //現在地を目的地にする。
 	}
