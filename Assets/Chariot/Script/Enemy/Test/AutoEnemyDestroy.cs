@@ -8,9 +8,12 @@ public class AutoEnemyDestroy : MonoBehaviour {
 	void Start(){
 		player = GameObject.Find ("Chariot");
 	}
-	
+		
 	void Update () {
-		if ((transform.position - player.transform.position).magnitude > 100.0f) {
+		//敵がプレイヤーより後方100fより遠ざかったら自動的に消滅、その際に敵消滅数カウントアップ
+		if (player.transform.position.z - transform.position.z > 100.0f) {
+			StageGenerator.destroyedEnemies++;
+			Debug.Log ("Counted up");
 			Destroy (this.gameObject);
 		}
 	}

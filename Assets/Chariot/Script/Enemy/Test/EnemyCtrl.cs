@@ -171,6 +171,7 @@ public class EnemyCtrl : MonoBehaviour {
 	void Died()
 	{
 		status.died = true;
+		StageGenerator.destroyedEnemies++; //敵消滅数をカウントアップ、！本当はアニメーションが終わる時にしたい！
 		Destroy(gameObject);//倒れるアニメーションが無い為(ある場合は、Enemystatus経由でEnemyAnimationへ、倒れるアニメーション後にEnemy消失)
 	}
 
