@@ -86,8 +86,8 @@ public class StageGenerator : MonoBehaviour {
 	void GenerateEnemyGenerator(int stagez, int stagesize){
 		for(int i=0;i<3;i++){
 			for(int j=0;j<6;j++){
-				float randomx = -30f + 30f * i + 30f * Random.value;
-				float randomz = stagez + 83.3f * j + 83.3f * Random.value;
+				float randomx = -20f + 16.6f * i + 16.6f * Random.value;
+				float randomz = stagez - 0.5f * stagesize + 83.3f * j + 83.3f * Random.value;
 				float randomr = -120f + 60f * Random.value;
 				Instantiate(enemyGenerator[phaseCount], new Vector3(randomx,0.73f,randomz), Quaternion.Euler(0,randomr,0));
 			}
