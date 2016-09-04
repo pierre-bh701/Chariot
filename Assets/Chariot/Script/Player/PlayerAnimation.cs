@@ -3,10 +3,15 @@ using System.Collections;
 
 public class PlayerAnimation : MonoBehaviour {
 
+	//UI更新用
+	GameObject uimanagement;
+	UIManager uimanager;
+
 	//速度、方向関連
 	public float speed = 4.0f;//速度倍率
 	public float chargeSpeed = 10.0f;//突進時のスピード
 	public float chargeCount = 10.0f;//突進時間
+	float maxChargeCount = 10.0f;//突進時間の最大値（UI更新用）
 	public bool charge = false;//突進スイッチ
 	public float gravity = 20.0f;//重力（未使用）
 	private Vector3 moveDirection = Vector3.zero; //左右移動
@@ -44,6 +49,8 @@ public class PlayerAnimation : MonoBehaviour {
 		animator = GetComponent<Animator> ();
 		status = GetComponent<PlayerStatus> ();
 		controller = GetComponent<CharacterController> ();
+		uimanagement = GameObject.Find ("UIManagement");
+		uimanager = uimanagement.GetComponent<UIManager> (); //UI更新用スクリプトを取得
 	}
 
 	float Angle180(float a)
@@ -156,6 +163,7 @@ public class PlayerAnimation : MonoBehaviour {
 				speed = chargeSpeed;
 				animator.SetBool ("LanceCharge", true);
 				chargeCount -= 2.0f * Time.deltaTime;
+				uimanager.UpdatePlayerCP (chargeCount, maxChargeCount);
 			}
 			if (chargeCount < 0.1f) {
 				charge = false;
@@ -163,6 +171,7 @@ public class PlayerAnimation : MonoBehaviour {
 			}
 			if (charge == false && chargeCount < 10.0f) {
 				chargeCount += 0.5f * Time.deltaTime;
+				uimanager.UpdatePlayerCP (chargeCount, maxChargeCount);
 			}
 
 
