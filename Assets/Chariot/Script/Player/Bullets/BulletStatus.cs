@@ -2,6 +2,5 @@
 using System.Collections;
 
 public class BulletStatus : MonoBehaviour {
-
-	public int Power = 10;
+	public int Power = 100;
 }

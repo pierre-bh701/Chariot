@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class StageGenerator : MonoBehaviour {
 
-	//チャリオットに合わせて動かさないと重くなるかも？？
+	//？自機に合わせて動かさないと重くなるかも？
 
 	const int StageTipSize = 500;//ステージチップの大きさ
 

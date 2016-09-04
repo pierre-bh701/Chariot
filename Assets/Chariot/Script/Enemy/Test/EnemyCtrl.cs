@@ -172,11 +172,14 @@ public class EnemyCtrl : MonoBehaviour {
 	{
 		status.died = true;
 		StageGenerator.destroyedEnemies++; //敵消滅数をカウントアップ、！本当はアニメーションが終わる時にしたい！
+		UIManager.knockedOutEnemies++; //敵撃破数をカウントアップ、！アニメーションの最後に入れたい！
+		Debug.Log(UIManager.knockedOutEnemies+"Hit");
 		Destroy(gameObject);//倒れるアニメーションが無い為(ある場合は、Enemystatus経由でEnemyAnimationへ、倒れるアニメーション後にEnemy消失)
 	}
 
 	//BulletDamageAreaスクリプトから、HitArea経由でダメージを引っ張ってくる
-	void Damage(BulletDamageArea.AttackInfo attackInfo)
+	//void Damage(BulletDamageArea.AttackInfo attackInfo)
+	void Damage(AttackInfo attackInfo)
 	{
 		status.HP -= attackInfo.bulletPower;//当たった弾の攻撃力分HPを減らす
 		if (status.HP <= 0) {
