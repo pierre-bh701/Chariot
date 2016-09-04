@@ -4,7 +4,7 @@ using System.Collections;
 public class EnemyStatus : MonoBehaviour {
 
 	public int HP = 100;
-	public int MaxHP = 100; //現状は使ってない
+	public int MaxHP = 100;
 
 	public int Power = 10;
 

@@ -7,10 +7,9 @@ public class UIManager : MonoBehaviour {
 	public static int knockedOutEnemies;
 
 	GameObject playerHPGage; //プレイヤーの体力ゲージ、Startで取得（以下ゲージは全てStartで取得）
-	float playerHP = 1; //プレイヤーの体力 Hit Point
+	// float playerHP = 1; //プレイヤーの体力 Hit Point
 	GameObject playerCPGage; //プレイヤーのチャージポイントゲージ、Startで取得
-	float playerCP = 1; //プレイヤーのチャージポイント Charge Point
-
+	// float playerCP = 1; //プレイヤーのチャージポイント Charge Point
 
 	/* 今後実装するもの
 	 * Score
@@ -38,4 +37,5 @@ public class UIManager : MonoBehaviour {
 	public void UpdatePlayerCP(float cp, float maxcp){
 		this.playerCPGage.GetComponent<Image> ().fillAmount = cp / maxcp;
 	}
+
 }

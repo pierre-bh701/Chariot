@@ -13,7 +13,6 @@ public class EnemyGenertor : MonoBehaviour {
 	//プレイヤー
 
 
-	// Use this for initialization
 	void Start () {
 		player = GameObject.Find ("Chariot");
 	}
