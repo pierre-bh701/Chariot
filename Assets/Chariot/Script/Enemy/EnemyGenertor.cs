@@ -20,7 +20,7 @@ public class EnemyGenertor : MonoBehaviour {
 	
 	void Update(){
 		//一定距離内に入ったら
-		if((transform.position - player.transform.position).magnitude < 100.0f){
+		if(transform.position.z - player.transform.position.z < 100.0f){
 			Generate ();//敵生成
 			Destroy (gameObject);//生成後に削除
 		}
