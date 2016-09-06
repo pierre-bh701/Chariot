@@ -29,18 +29,31 @@ public class StageGenerator : MonoBehaviour {
 
 	void Update () {
 
-		//敵消滅数が定数以上ならnextStageTipを更新、？定数はステージやフェイズによって変更？
-		if(destroyedEnemies >= 20 && phaseCount < 2){
-			phaseCount++;
-			destroyedEnemies = 0;
+		if(phaseCount==0){
+			if(Input.GetKey(KeyCode.Space)){
+				phaseCount++;
+			}
+			//ステージチップの更新処理
+			int charaPositionIndex = (int)(character.position.z / StageTipSize);
+			if (charaPositionIndex + preInstantiate > currentTipIndex){
+				UpdateStage (charaPositionIndex + preInstantiate);
+			}
 		}
 
-		//キャラクターの位置から現在のステージチップのインデックスを計算
-		int charaPositionIndex = (int)(character.position.z / StageTipSize);
+		if(phaseCount >= 1 && phaseCount <= 3){
+			//敵消滅数が定数以上ならnextStageTipを更新、？定数はステージやフェイズによって変更？
+			if(destroyedEnemies >= 20 && phaseCount < 3){
+				phaseCount++;
+				destroyedEnemies = 0;
+			}
 
-		//次のステージチップに入ったらステージの更新処理を行う
-		if (charaPositionIndex + preInstantiate > currentTipIndex){
-			UpdateStage (charaPositionIndex + preInstantiate);
+			//キャラクターの位置から現在のステージチップのインデックスを計算
+			int charaPositionIndex = (int)(character.position.z / StageTipSize);
+
+			//次のステージチップに入ったらステージの更新処理を行う
+			if (charaPositionIndex + preInstantiate > currentTipIndex){
+				UpdateStage (charaPositionIndex + preInstantiate);
+			}
 		}
 	}
 
@@ -49,16 +62,16 @@ public class StageGenerator : MonoBehaviour {
 		if (toTipIndex <= currentTipIndex) {
 			return;
 		}
-
 		//指定のステージチップまで作成
 		for (int i = currentTipIndex + 1; i <= toTipIndex; i++) {
 			GameObject stageObject = GenerateStage (i);
-			//ステージチップ上にエネミージェネレータを配置
-			GenerateEnemyGenerator (StageTipSize * i, StageTipSize);
 			//生成したステージチップを管理リストに追加
 			generatedStageList.Add(stageObject);
+			if (phaseCount >= 1 && phaseCount <= 3) { // 戦闘フェイズならば
+				//ステージチップ上にエネミージェネレータを配置
+				GenerateEnemyGenerator (StageTipSize * i, StageTipSize);
+			}
 		}
-
 		//ステージの保持上限内になるまで古いステージを削除
 		while(generatedStageList.Count > preInstantiate + 2)DestroyOldestStage();
 
@@ -68,7 +81,7 @@ public class StageGenerator : MonoBehaviour {
 	//指定のインデックス位置にStageオブジェクトをランダムに生成/フェイズ数に管理させる
 	GameObject GenerateStage(int tipIndex){
 		GameObject stageObject = (GameObject)Instantiate (
-			                         stageTips [phaseCount],
+			stageTips [PhaseCountToStageTipIndex(phaseCount)],
 			                         new Vector3 (0, 0, tipIndex * StageTipSize),
 			                         Quaternion.identity
 		                         );
@@ -86,11 +99,39 @@ public class StageGenerator : MonoBehaviour {
 	void GenerateEnemyGenerator(int stagez, int stagesize){
 		for(int i=0;i<3;i++){
 			for(int j=0;j<6;j++){
-				float randomx = -20f + 16.6f * i + 16.6f * Random.value;
+				float randomx = -20f + 13.3f * i + 13.3f * Random.value;
 				float randomz = stagez - 0.5f * stagesize + 83.3f * j + 83.3f * Random.value;
 				float randomr = -120f + 60f * Random.value;
-				Instantiate(enemyGenerator[phaseCount], new Vector3(randomx,0.73f,randomz), Quaternion.Euler(0,randomr,0));
+				Instantiate(enemyGenerator[PhaseCountToEnemyIndex(phaseCount)], new Vector3(randomx,0.73f,randomz), Quaternion.Euler(0,randomr,0));
 			}
 		}
+	}
+
+	// フェイズに応じてステージチップの種類番号を返す
+	int PhaseCountToStageTipIndex (int phase){
+		switch (phase) {
+		case 0:
+			return 0;
+		case 1:
+			return 0;
+		case 2:
+			return 1;
+		case 3:
+			return 2;
+		}
+		return 0;
+	}
+
+	// フェイズに応じてエネミーの種類番号を返す
+	int PhaseCountToEnemyIndex(int phase){
+		switch (phase) {
+		case 1:
+			return 0;
+		case 2:
+			return 1;
+		case 3:
+			return 2;
+		}
+		return 0;
 	}
 }
