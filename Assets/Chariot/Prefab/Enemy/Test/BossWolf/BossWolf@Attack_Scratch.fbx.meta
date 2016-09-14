@@ -1,0 +1,264 @@
+fileFormatVersion: 2
+guid: bae8656f9cef24bf2b4066d7ac2c3097
+timeCreated: 1473840223
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Arm_L.001
+    100002: Arm_L.002
+    100004: Arm_L.003
+    100006: Arm_L.003_end
+    100008: Arm_R.001
+    100010: Arm_R.002
+    100012: Arm_R.003
+    100014: Arm_R.003_end
+    100016: //RootNode
+    100018: Chest
+    100020: Cube
+    100022: Head
+    100024: Hip
+    100026: Jaw
+    100028: Jaw_end
+    100030: Leg_L.001
+    100032: Leg_L.002
+    100034: Leg_L.003
+    100036: Leg_L.004
+    100038: Leg_L.004_end
+    100040: Leg_R.001
+    100042: Leg_R.002
+    100044: Leg_R.003
+    100046: Leg_R.004
+    100048: Leg_R.004_end
+    100050: Neck
+    100052: Root
+    100054: Shoulder_L
+    100056: Shoulder_R
+    100058: Spine
+    100060: Tail.001
+    100062: Tail.002
+    100064: Tail.003
+    100066: Tail.003_end
+    100068: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2"
+    400000: Arm_L.001
+    400002: Arm_L.002
+    400004: Arm_L.003
+    400006: Arm_L.003_end
+    400008: Arm_R.001
+    400010: Arm_R.002
+    400012: Arm_R.003
+    400014: Arm_R.003_end
+    400016: //RootNode
+    400018: Chest
+    400020: Cube
+    400022: Head
+    400024: Hip
+    400026: Jaw
+    400028: Jaw_end
+    400030: Leg_L.001
+    400032: Leg_L.002
+    400034: Leg_L.003
+    400036: Leg_L.004
+    400038: Leg_L.004_end
+    400040: Leg_R.001
+    400042: Leg_R.002
+    400044: Leg_R.003
+    400046: Leg_R.004
+    400048: Leg_R.004_end
+    400050: Neck
+    400052: Root
+    400054: Shoulder_L
+    400056: Shoulder_R
+    400058: Spine
+    400060: Tail.001
+    400062: Tail.002
+    400064: Tail.003
+    400066: Tail.003_end
+    400068: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2"
+    4300000: Cube
+    7400000: Attack_Scratch
+    9500000: //RootNode
+    13700000: Cube
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Attack_Scratch
+      takeName: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2|\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2Action"
+      firstFrame: 0
+      lastFrame: 83
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events:
+      - time: 0.2079208
+        functionName: StartAttackHit
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.27722773
+        functionName: EndAttackHit
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.9768977
+        functionName: EndAttack
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Cube
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Leg_L.001"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Leg_L.001/Leg_L.002"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Leg_L.001/Leg_L.002/Leg_L.003"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Leg_L.001/Leg_L.002/Leg_L.003/Leg_L.004"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Leg_L.001/Leg_L.002/Leg_L.003/Leg_L.004/Leg_L.004_end"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Leg_R.001"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Leg_R.001/Leg_R.002"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Leg_R.001/Leg_R.002/Leg_R.003"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Leg_R.001/Leg_R.002/Leg_R.003/Leg_R.004"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Leg_R.001/Leg_R.002/Leg_R.003/Leg_R.004/Leg_R.004_end"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Spine"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Spine/Chest"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Spine/Chest/Neck"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Spine/Chest/Neck/Head"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Spine/Chest/Neck/Head/Jaw"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Spine/Chest/Neck/Head/Jaw/Jaw_end"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Spine/Chest/Shoulder_L"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Spine/Chest/Shoulder_L/Arm_L.001"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Spine/Chest/Shoulder_L/Arm_L.001/Arm_L.002"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Spine/Chest/Shoulder_L/Arm_L.001/Arm_L.002/Arm_L.003"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Spine/Chest/Shoulder_L/Arm_L.001/Arm_L.002/Arm_L.003/Arm_L.003_end"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Spine/Chest/Shoulder_R"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Spine/Chest/Shoulder_R/Arm_R.001"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Spine/Chest/Shoulder_R/Arm_R.001/Arm_R.002"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Spine/Chest/Shoulder_R/Arm_R.001/Arm_R.002/Arm_R.003"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Spine/Chest/Shoulder_R/Arm_R.001/Arm_R.002/Arm_R.003/Arm_R.003_end"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Tail.001"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Tail.001/Tail.002"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Tail.001/Tail.002/Tail.003"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Tail.001/Tail.002/Tail.003/Tail.003_end"
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
