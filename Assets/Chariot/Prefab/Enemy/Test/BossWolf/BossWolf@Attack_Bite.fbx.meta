@@ -125,21 +125,21 @@ ModelImporter:
       curves: []
       events:
       - time: 0.36633664
-        functionName: StartAttackHit
+        functionName: StartBiteHit
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
       - time: 0.6171617
-        functionName: EndAttackHit
+        functionName: EndScratchHit
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
       - time: 0.960396
-        functionName: EndAttack
+        functionName: EndBite
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
