@@ -76,7 +76,7 @@ ModelImporter:
     400066: Tail.003_end
     400068: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2"
     4300000: Cube
-    7400000: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2|\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2Action"
+    7400000: Died
     9500000: //RootNode
     13700000: Cube
   materials:
@@ -99,7 +99,112 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Died
+      takeName: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2|\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2Action"
+      firstFrame: 0
+      lastFrame: 160
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events:
+      - time: 1
+        functionName: BossWolfDead
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Cube
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Leg_L.001"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Leg_L.001/Leg_L.002"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Leg_L.001/Leg_L.002/Leg_L.003"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Leg_L.001/Leg_L.002/Leg_L.003/Leg_L.004"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Leg_L.001/Leg_L.002/Leg_L.003/Leg_L.004/Leg_L.004_end"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Leg_R.001"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Leg_R.001/Leg_R.002"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Leg_R.001/Leg_R.002/Leg_R.003"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Leg_R.001/Leg_R.002/Leg_R.003/Leg_R.004"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Leg_R.001/Leg_R.002/Leg_R.003/Leg_R.004/Leg_R.004_end"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Spine"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Spine/Chest"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Spine/Chest/Neck"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Spine/Chest/Neck/Head"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Spine/Chest/Neck/Head/Jaw"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Spine/Chest/Neck/Head/Jaw/Jaw_end"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Spine/Chest/Shoulder_L"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Spine/Chest/Shoulder_L/Arm_L.001"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Spine/Chest/Shoulder_L/Arm_L.001/Arm_L.002"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Spine/Chest/Shoulder_L/Arm_L.001/Arm_L.002/Arm_L.003"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Spine/Chest/Shoulder_L/Arm_L.001/Arm_L.002/Arm_L.003/Arm_L.003_end"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Spine/Chest/Shoulder_R"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Spine/Chest/Shoulder_R/Arm_R.001"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Spine/Chest/Shoulder_R/Arm_R.001/Arm_R.002"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Spine/Chest/Shoulder_R/Arm_R.001/Arm_R.002/Arm_R.003"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Spine/Chest/Shoulder_R/Arm_R.001/Arm_R.002/Arm_R.003/Arm_R.003_end"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Tail.001"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Tail.001/Tail.002"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Tail.001/Tail.002/Tail.003"
+        weight: 1
+      - path: "\u30A2\u30FC\u30DE\u30C1\u30E5\u30A2/Root/Hip/Tail.001/Tail.002/Tail.003/Tail.003_end"
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []

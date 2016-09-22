@@ -13,7 +13,10 @@ public class EnemyAnimationBossWolf : MonoBehaviour {
 	bool isDead = false;//倒れるフラグ
 	bool attacked = false;//攻撃終了フラグ
 	public bool scratched = false;
+	public bool scratchJumped = false;
 	public bool bited = false;
+	public bool barked = false;
+	public bool downed = false;
 
 	public bool IsAttacked(){
 		return this.attacked;
@@ -30,28 +33,42 @@ public class EnemyAnimationBossWolf : MonoBehaviour {
 	void EndAttack(){
 		attacked = true;
 	}
+
 	void StartScratchHit(){
 		attackScratchArea.OnAttack();
+		this.scratchJumped = true;
 	}
 	void EndScratchHit(){
-		attackBiteArea.OnAttackTermination();
-	}
-	void StartBiteHit(){
-		attackScratchArea.OnAttack();
-	}
-	void EndBiteHit(){
-		attackBiteArea.OnAttackTermination();
+		attackScratchArea.OnAttackTermination();
 	}
 	void EndScratch(){
 		this.scratched = true;
 		animator.SetTrigger("Jumping");
+	}
+
+	void StartBiteHit(){
+		attackBiteArea.OnAttack();
+	}
+	void EndBiteHit(){
+		attackBiteArea.OnAttackTermination();
 	}
 	void EndBite(){
 		this.bited = true;
 		animator.SetTrigger("Jumping");
 	}
 
-	void Died(){//倒れるアニメーションの最後で、この関数を呼び出す。
+	void EndBark(){
+		this.barked = true;
+		animator.SetTrigger("Jumping");
+	}
+
+	void EndDown(){
+		Debug.Log ("downed");
+		this.downed = true;
+		animator.SetTrigger("Jumping");
+	}
+
+	void BossWolfDead(){
 		Destroy (gameObject);
 	}
 

@@ -3,8 +3,8 @@ using System.Collections;
 
 public class EnemyStatusBossWolf : MonoBehaviour {
 
-	public int HP = 1000;
-	public int maxHP = 1000;
+	public int HP = 3000;
+	public int maxHP = 3000;
 
 	public int Power = 10;
 

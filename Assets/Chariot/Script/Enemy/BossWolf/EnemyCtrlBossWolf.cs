@@ -12,6 +12,11 @@ public class EnemyCtrlBossWolf : MonoBehaviour {
 	SearchAreaBossWolfScratch scratchArea;
 	GameObject chariot;
 	Transform attackTarget;
+	public BoxCollider attackAreaJaw;
+	public BoxCollider attackAreaClaw;
+	public BoxCollider hitAreaBody;
+	public BoxCollider hitAreaHead;
+	int downSwitchHpDif = 315;
 	// 待機時間
 	public float waitBaseTime = 10.0f; //3.0f
 	// 残り待機時間
@@ -20,6 +25,7 @@ public class EnemyCtrlBossWolf : MonoBehaviour {
 	public float walkRange = 4.0f;
 	// 初期位置を保存しておく変数
 	//public Vector3 basePosition;
+	int temporaryHP;
 
 	Vector3 destination;
 
@@ -28,6 +34,10 @@ public class EnemyCtrlBossWolf : MonoBehaviour {
 
 	int scratchStep = 0;
 	int biteStep = 0;
+	int chaseScratchStep = 0;
+	int crossStep = 0;
+	int howlingStep = 0;
+	int downStep = 0;
 
 	// ステートの種類.
 	enum State {
@@ -65,6 +75,8 @@ public class EnemyCtrlBossWolf : MonoBehaviour {
 	}
 		
 	void Update () {
+
+		Debug.Log (animationBW.scratchJumped);
 
 		switch (state) {
 
@@ -124,8 +136,30 @@ public class EnemyCtrlBossWolf : MonoBehaviour {
 	}
 
 	void Running(){
+		float randomSeed = Random.value;
+		if(randomSeed < 0.2){
+			moveBW.runSpeed += 2;
+		}else if(randomSeed > 0.8){
+			moveBW.runSpeed -= 2;
+		}
+		if(moveBW.runSpeed >= moveBW.maxRunSpeed - 2 || transform.position.z - attackTarget.position.z > 45){
+			moveBW.runSpeed -= 5;
+		}else if(moveBW.runSpeed <= moveBW.minRunSpeed + 2 || transform.position.z - attackTarget.position.z < -45){
+			moveBW.runSpeed += 5;
+		}
+		if(transform.position.z - attackTarget.position.z > 50){
+			moveBW.runSpeed -= 5;
+		}else if(transform.position.z - attackTarget.position.z < -50){
+			moveBW.runSpeed += 5;
+		}
+
+		if (transform.position.x > 0) {
+			transform.position = new Vector3 (20, transform.position.y, transform.position.z);
+		} else {
+			transform.position = new Vector3 (-20, transform.position.y, transform.position.z);;
+		}
+
 		if (waitTime > 0.0f) {
-			Debug.Log (waitTime);
 			waitTime -= Time.deltaTime;
 			// destinationを決定、Moveスクリプトに送信
 			Vector3 destinationPosition = transform.position + new Vector3 (0.0f, 0.0f, 100);
@@ -133,19 +167,24 @@ public class EnemyCtrlBossWolf : MonoBehaviour {
 		} else {
 			waitTime = Random.Range (waitBaseTime, waitBaseTime * 2.0f);
 
+			//Vector3.Distance (attackTarget.position, transform.position) <= searchScratchRange
+
 			if (statusBW.howlingFrag [statusBW.stageStep]) {
 				ChangeState (State.Howling);
-			} else if (Vector3.Distance (attackTarget.position, transform.position) <= searchScratchRange) {
-				ChangeState (State.Scratching);
-			} else {
-				float randomSeed = Random.value;
-				if(randomSeed<=1.0f){
-					ChangeState (State.Biting);
-				}else if(randomSeed<=0.66f){
-					ChangeState (State.ChaseScratching);
-				}else{
+			} else if (transform.position.z - attackTarget.position.z < 5 && transform.position.z - attackTarget.position.z > -10) {
+				if (transform.position.x * attackTarget.position.x >= 0) {
+					ChangeState (State.Scratching);
+				} else {
 					ChangeState (State.Crossing);
 				}
+			} else if (randomSeed < 0.7) {
+				if (transform.position.z - attackTarget.position.z > 5) {
+					ChangeState (State.Biting);
+				} else {
+					ChangeState (State.ChaseScratching);
+				}
+			} else {
+				ChangeState (State.Crossing);
 			}
 		}
 	}
@@ -157,7 +196,8 @@ public class EnemyCtrlBossWolf : MonoBehaviour {
 			animator.SetBool ("Biting", true);
 			destination = new Vector3 (transform.position.x, transform.position.y, attackTarget.position.z + 50f);
 			SendMessage ("SetDestination", destination);
-			moveBW.runSpeed = moveBW.maxRunSpeed*1.2f;
+			moveBW.runSpeed = moveBW.maxRunSpeed * 1.2f;
+			temporaryHP = statusBW.HP;
 			this.biteStep++;
 			break;
 		case 1:
@@ -169,6 +209,11 @@ public class EnemyCtrlBossWolf : MonoBehaviour {
 				moveBW.runSpeed = moveBW.maxRunSpeed*1.5f;
 				this.biteStep++;
 			}
+			if(temporaryHP - statusBW.HP >= downSwitchHpDif){
+				ChangeState (State.Downing);
+				animator.SetTrigger ("SetDown");
+				this.biteStep = 0;
+			}
 			break;
 		case 2:
 			// 移動(Jump、プレーヤーの方を向かせる)、アニメーション切り替え
@@ -177,12 +222,23 @@ public class EnemyCtrlBossWolf : MonoBehaviour {
 				this.biteStep++;
 			}
 			transform.LookAt(attackTarget);
+			if(temporaryHP - statusBW.HP >= downSwitchHpDif){
+				ChangeState (State.Downing);
+				animator.SetTrigger ("SetDown");
+				this.biteStep = 0;
+			}
 			break;
 		case 3:
 			//待機
 			if(transform.position.z - attackTarget.position.z < 20f){
 				animator.SetBool("AttackBite",true);
 				this.biteStep++;
+			}
+			if(temporaryHP - statusBW.HP >= downSwitchHpDif){
+				attackAreaJaw.enabled = false;
+				ChangeState (State.Downing);
+				animator.SetTrigger ("SetDown");
+				this.biteStep = 0;
 			}
 			break;
 		case 4:
@@ -201,6 +257,12 @@ public class EnemyCtrlBossWolf : MonoBehaviour {
 				animationBW.bited = false;
 				this.biteStep++;
 			}
+			if(temporaryHP - statusBW.HP >= downSwitchHpDif){
+				attackAreaJaw.enabled = false;
+				ChangeState (State.Downing);
+				animator.SetTrigger ("SetDown");
+				this.biteStep = 0;
+			}
 			break;
 		case 5:
 			// Jumpで戻る
@@ -213,7 +275,6 @@ public class EnemyCtrlBossWolf : MonoBehaviour {
 				ChangeState (State.Running);
 			}
 			break;
-			
 		}
 	}
 
@@ -242,6 +303,11 @@ public class EnemyCtrlBossWolf : MonoBehaviour {
 		case 2:
 			// Scratchアニメーション
 			animator.SetBool ("AttackScratch", false);
+			if(animationBW.scratchJumped == false){
+				transform.position = new Vector3 (transform.position.x, transform.position.y, attackTarget.position.z - 7f);
+				transform.LookAt (attackTarget);
+			}
+
 			if (animationBW.scratched == true) {
 				if (transform.position.x < 0) {
 					destination = new Vector3 (-20f, transform.position.y, transform.position.z + 20f);
@@ -252,9 +318,8 @@ public class EnemyCtrlBossWolf : MonoBehaviour {
 				}
 				moveBW.runSpeed = moveBW.maxRunSpeed * 0.8f;
 				animationBW.scratched = false;
+				animationBW.scratchJumped = false;
 				this.scratchStep++;
-			} else {//敵のz座標をプレイヤーに合わせる？
-				// transform.position = new Vector3 (transform.position.x, transform.position.y, attackTarget.position.z - 7f);
 			}
 			break;
 		case 3:
@@ -272,15 +337,260 @@ public class EnemyCtrlBossWolf : MonoBehaviour {
 	}
 
 	void ChaseScratching(){
+		switch(this.chaseScratchStep){
+		case 0:
+			// アニメーション切り替え、目的地と速さの初期化
+			animator.SetBool ("ChaseScratching", true);
+			destination = attackTarget.position + new Vector3 (0f, 0f, -20f);
+			SendMessage ("SetDestination", destination);
+			moveBW.runSpeed = moveBW.maxRunSpeed * 1.2f;
+			temporaryHP = statusBW.HP;
+			this.chaseScratchStep++;
+			break;
+		case 1:
+			// 移動(Jump)
+			if(moveBW.arrived){
+				animator.SetTrigger ("SetRun");
+				destination = attackTarget.position;
+				SendMessage ("SetDestination", destination);
+				this.chaseScratchStep++;
+				moveBW.runSpeed = moveBW.maxRunSpeed*1.4f;
+			}
+			if(temporaryHP - statusBW.HP >= downSwitchHpDif){
+				ChangeState (State.Downing);
+				animator.SetTrigger ("SetDown");
+				this.chaseScratchStep = 0;
+			}
+			break;
+		case 2:
+			// 追跡(Run)
+			destination = attackTarget.position;
+			SendMessage ("SetDestination", destination);
+			if(transform.position.z - attackTarget.position.z > -7f){
+				animator.SetBool ("AttackScratch", true);
+				this.chaseScratchStep++;
+			}
+			if(temporaryHP - statusBW.HP >= downSwitchHpDif){
+				attackAreaClaw.enabled = false;
+				ChangeState (State.Downing);
+				animator.SetTrigger ("SetDown");
+				this.chaseScratchStep = 0;
+			}
+			break;
+		case 3:
+			// Scratchアニメーション
+			animator.SetBool ("AttackScratch", false);
+			if(animationBW.scratchJumped == false){
+				transform.position = new Vector3 (transform.position.x, transform.position.y, attackTarget.position.z - 7f);
+			}
+
+			if (animationBW.scratched == true) {
+				float randomSeed = Random.value;
+				if (randomSeed < 0.5) {
+					destination = new Vector3 (-20f, transform.position.y, attackTarget.position.z);
+					SendMessage ("SetDestination", destination);
+				} else {
+					destination = new Vector3 (20f, transform.position.y, attackTarget.position.z);
+					SendMessage ("SetDestination", destination);
+				}
+				moveBW.runSpeed = moveBW.maxRunSpeed*1.5f;
+				animationBW.scratched = false;
+				this.chaseScratchStep++;
+			}
+			if(temporaryHP - statusBW.HP >= downSwitchHpDif){
+				attackAreaClaw.enabled = false;
+				ChangeState (State.Downing);
+				animator.SetTrigger ("SetDown");
+				this.chaseScratchStep = 0;
+			}
+			break;
+		case 4:
+			// Jumpで戻る
+			Debug.Log("through");
+			if(moveBW.arrived){
+				animator.SetBool ("ChaseScratching", false);
+				animationBW.scratchJumped = false;
+				destination = transform.position + new Vector3 (0.0f, 0.0f, 100);
+				SendMessage ("SetDestination", destination);
+				this.waitTime = this.waitBaseTime;
+				this.chaseScratchStep = 0;
+				moveBW.runSpeed = moveBW.maxRunSpeed*0.8f;
+				ChangeState (State.Running);
+			}
+			break;
+		}
 	}
 
 	void Crossing(){
+		switch (this.crossStep) {
+		case 0:
+			// アニメーション切り替え、目的地と速さの初期化
+			animator.SetBool ("Crossing", true);
+			if (transform.position.x < 0) {
+				destination = new Vector3 (20f, transform.position.y, transform.position.z + 50f);
+				SendMessage ("SetDestination", destination);
+			} else {
+				destination = new Vector3 (-20f, transform.position.y, transform.position.z + 50f);
+				SendMessage ("SetDestination", destination);
+			}
+			moveBW.runSpeed = moveBW.maxRunSpeed * 1.2f;
+			this.crossStep++;
+			break;
+		case 1:
+			// 移動(Jump)
+			transform.position = new Vector3 (transform.position.x, 0.68f+0.02f*(20 + transform.position.x)*(20 - transform.position.x) , transform.position.z);
+			if (moveBW.arrived) {
+				if(transform.position.x < 0){
+					transform.position = new Vector3 (-20, transform.position.y, transform.position.z);
+				}else{
+					transform.position = new Vector3 (20, transform.position.y, transform.position.z);
+				}
+				if(Vector3.Distance(attackTarget.position, transform.position) > searchScratchRange){
+					animator.SetBool ("Crossing", false);
+					destination = transform.position + new Vector3 (0f, 0f, 100f);
+					SendMessage ("SetDestination", destination);
+					moveBW.runSpeed = moveBW.maxRunSpeed*0.8f;
+					this.waitTime = this.waitBaseTime;
+					this.crossStep = 0;
+					ChangeState (State.Running);
+				}else{
+					animator.SetBool ("AttackScratch", true);
+					/*
+					if (transform.position.x < 0) {
+						destination = attackTarget.position + new Vector3 (-3f, 0f, -7f);
+						SendMessage ("SetDestination", destination);
+					} else {
+						destination = attackTarget.position + new Vector3 (3f, 0f, -7f);
+						SendMessage ("SetDestination", destination);
+					}
+					moveBW.runSpeed = moveBW.maxRunSpeed*2.0f;
+					*/
+					this.crossStep++;
+				}
+			}
+			break;
+		case 2:
+			animator.SetBool ("AttackScratch", false);
+			if(animationBW.scratchJumped == false){
+				transform.position = new Vector3 (transform.position.x, transform.position.y, attackTarget.position.z - 4f);
+				transform.LookAt (attackTarget);
+			}
+			transform.LookAt (attackTarget);
+			if (animationBW.scratched == true) {
+				if (transform.position.x < 0) {
+					destination = new Vector3 (-20f, transform.position.y, transform.position.z + 20f);
+					SendMessage ("SetDestination", destination);
+				} else {
+					destination = new Vector3 (20f, transform.position.y, transform.position.z + 20f);
+					SendMessage ("SetDestination", destination);
+				}
+				moveBW.runSpeed = moveBW.maxRunSpeed * 0.8f;
+				animationBW.scratched = false;
+				animationBW.scratchJumped = false;
+				this.crossStep++;
+			}
+			break;
+		case 3:
+			if(moveBW.arrived){
+				animator.SetBool ("Crossing", false);
+				destination = transform.position + new Vector3 (0.0f, 0.0f, 100);
+				SendMessage ("SetDestination", destination);
+				this.waitTime = this.waitBaseTime;
+				this.crossStep = 0;
+				ChangeState (State.Running);
+			}
+			break;
+		}
 	}
 
 	void Howling(){
+		switch (this.howlingStep) {
+		case 0:
+			// アニメーション切り替え、目的地と速さの初期化
+			animator.SetBool ("Howling", true);
+			destination = new Vector3 (0f, transform.position.y, attackTarget.position.z);
+			SendMessage ("SetDestination", destination);
+			moveBW.runSpeed = moveBW.maxRunSpeed * 1.5f;
+			this.howlingStep++;
+			break;
+		case 1:
+			//移動(Run)
+			if(moveBW.arrived){
+				animator.SetTrigger ("SetBark");
+				transform.LookAt (attackTarget);
+				this.howlingStep++;
+			}
+			break;
+		case 2:
+			//吠える
+			if (animationBW.barked == true) {
+				float randomSeed = Random.value;
+				if (randomSeed < 0.5) {
+					destination = new Vector3 (-17f, transform.position.y, attackTarget.position.z + 10f);
+					SendMessage ("SetDestination", destination);
+				} else {
+					destination = new Vector3 (17f, transform.position.y, attackTarget.position.z + 10f);
+					SendMessage ("SetDestination", destination);
+				}
+				moveBW.runSpeed = moveBW.maxRunSpeed*3.0f;
+				animationBW.barked = false;
+				statusBW.howlingFrag [statusBW.stageStep] = false;
+				this.howlingStep++;
+			}
+			break;
+		case 3:
+			// Jumpで戻る
+			if (moveBW.arrived) {
+				animator.SetBool ("Howling", false);
+				destination = transform.position + new Vector3 (0.0f, 0.0f, 100);
+				SendMessage ("SetDestination", destination);
+				this.waitTime = this.waitBaseTime;
+				this.howlingStep = 0;
+				ChangeState (State.Running);
+			}
+			break;
+		}
 	}
 
 	void Downing(){
+		switch(downStep){
+		case 0:
+			transform.LookAt (attackTarget);
+			if (animationBW.downed == true) {
+				float randomSeed = Random.value;
+				if (randomSeed < 0.5) {
+					destination = new Vector3 (-20f, transform.position.y, attackTarget.position.z);
+					SendMessage ("SetDestination", destination);
+				} else {
+					destination = new Vector3 (20f, transform.position.y, attackTarget.position.z);
+					SendMessage ("SetDestination", destination);
+				}
+				moveBW.runSpeed = moveBW.maxRunSpeed*1.5f;
+				animationBW.downed = false;
+				this.downStep++;
+			}
+			break;
+		case 1:
+			if(moveBW.arrived){
+				animator.SetBool ("ChaseScratching", false);
+				animationBW.scratchJumped = false;
+				animator.SetBool ("Biting", false);
+				animationBW.bited = false;
+				animationBW.scratched = false;
+				destination = transform.position + new Vector3 (0.0f, 0.0f, 100);
+				SendMessage ("SetDestination", destination);
+				this.waitTime = this.waitBaseTime;
+				this.downStep = 0;
+				ChangeState (State.Running);
+			}
+			break;
+		}
+	}
+
+	void Died(){
+		destination = transform.position;
+		SendMessage ("SetDestination", destination);
+		statusBW.died = true;
 	}
 
 
@@ -318,18 +628,10 @@ public class EnemyCtrlBossWolf : MonoBehaviour {
 		statusBW.downing = true;
 	}
 
-
-
-	void Died()
-	{
-		statusBW.died = true;
-		Destroy(gameObject);//倒れるアニメーションが無い為(ある場合は、Enemystatus経由でEnemyAnimationへ、倒れるアニメーション後にEnemy消失)
-	}
-
 	//BulletDamageAreaスクリプトから、HitArea経由でダメージを引っ張ってくる
-	void Damage(AttackInfo attackInfo)
+	void Damage(int attackInfo)
 	{
-		statusBW.HP -= attackInfo.bulletPower;//当たった弾の攻撃力分HPを減らす
+		statusBW.HP -= attackInfo;//当たった弾の攻撃力分HPを減らす
 		if (statusBW.HP <= 0) {
 			statusBW.HP = 0;
 			ChangeState(State.Died);
@@ -430,5 +732,20 @@ public class EnemyCtrlBossWolf : MonoBehaviour {
 	// 攻撃対象を設定する
 	public void SetAttackTarget(Transform target){
 		attackTarget = target;
+	}
+
+	void HitAreaBodyOff(){
+		hitAreaBody.enabled = false;
+		Invoke("HitAreaBodyOn", 0.01f);
+	}
+	void HitAreaBodyOn(){
+		hitAreaBody.enabled = true;
+	}
+	void HitAreaHeadOff(){
+		hitAreaHead.enabled = false;
+		Invoke("HitAreaHeadOn", 0.01f);
+	}
+	void HitAreaHeadOn(){
+		hitAreaHead.enabled = true;
 	}
 }

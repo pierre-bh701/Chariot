@@ -15,13 +15,17 @@ public class EnemyMoveBossWolf : MonoBehaviour {
 
 	public Vector3 destination;//目的地
 	public float maxRunSpeed = 30.0f;//移動速度
-	public float minRunSpeed = 12.0f;
+	public float minRunSpeed = 2.0f;
 	public float runSpeed;
 	public float rotationSpeed = 360.0f;//回転速度
+
+	public bool gravityAccessible = true;
+	EnemyStatusBossWolf statusBW;
 
 	void Start () {
 		characterController = GetComponent<CharacterController> ();
 		destination = transform.position;
+		statusBW = GetComponent<EnemyStatusBossWolf> ();
 
 		runSpeed = maxRunSpeed*0.8f;
 	}
@@ -29,7 +33,7 @@ public class EnemyMoveBossWolf : MonoBehaviour {
 	void Update () {
 
 		//移動速度Velocityを更新する
-		if (characterController.isGrounded) {
+		if (characterController.isGrounded || statusBW.crossing) {
 			//水平面での移動を考えるのでXZのみ扱う
 			Vector3 destinationXZ = destination;
 			destinationXZ.y = transform.position.y;//高さを目的地と現在地を同じにしておく
@@ -72,14 +76,18 @@ public class EnemyMoveBossWolf : MonoBehaviour {
 			}
 		}
 
-		//重力加速度を速度に加算
-		velocity += Vector3.down * GravityPower * Time.deltaTime;
-
-		//接地していたら、強く地面に押し付ける(接地判定を強める)(浮いている敵も同様)
-		//(UnityのCharacterControllerの特性のため)
 		Vector3 snapGround = Vector3.zero;
-		if (characterController.isGrounded) {
-			snapGround = Vector3.down;
+
+		if(gravityAccessible){
+			//重力加速度を速度に加算
+			velocity += Vector3.down * GravityPower * Time.deltaTime;
+
+			//接地していたら、強く地面に押し付ける(接地判定を強める)(浮いている敵も同様)
+			//(UnityのCharacterControllerの特性のため)
+			snapGround = Vector3.zero;
+			if (characterController.isGrounded) {
+				snapGround = Vector3.down;
+			}
 		}
 
 		//CharacterControllerを使って動かす

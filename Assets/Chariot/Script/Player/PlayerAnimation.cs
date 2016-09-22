@@ -88,7 +88,7 @@ public class PlayerAnimation : MonoBehaviour {
 
 			if (Input.GetKey ("d")) {
 				if (AngleDiff (angle - 45, DirectionAxis) > 0) {
-					float diff = Mathf.Min (5f, AngleDiff (angle - 45f, DirectionAxis));
+					float diff = Mathf.Min (2f, AngleDiff (angle - 45f, DirectionAxis));
 					transform.Rotate (new Vector3 (0, diff, 0));
 
 					wheelL.transform.Rotate (wheelRotation + new Vector3 (diff, 0, 0));
@@ -99,7 +99,7 @@ public class PlayerAnimation : MonoBehaviour {
 
 			if (Input.GetKey ("a")) {
 				if (AngleDiff (angle + 45f, DirectionAxis) < 0) {
-					float diff = Mathf.Max (-5f, AngleDiff (angle + 45f, DirectionAxis));
+					float diff = Mathf.Max (-2f, AngleDiff (angle + 45f, DirectionAxis));
 					transform.Rotate (new Vector3 (0, diff, 0));
 
 					wheelL.transform.Rotate (wheelRotation + new Vector3 (diff, 0, 0));
@@ -110,12 +110,12 @@ public class PlayerAnimation : MonoBehaviour {
 
 			if (!Input.GetKey ("d") && !Input.GetKey ("a")) {
 				if (AngleDiff (angle, DirectionAxis) > 0) {
-					float diff = Mathf.Min (5f, AngleDiff (angle, DirectionAxis));
+					float diff = Mathf.Min (2f, AngleDiff (angle, DirectionAxis));
 					transform.Rotate (new Vector3 (0, diff, 0));
 					wheelL.transform.Rotate (new Vector3 (diff, 0, 0));
 					wheelR.transform.Rotate (new Vector3 (-diff, 0, 0));
 				} else if (AngleDiff (angle, DirectionAxis) < 0) {
-					float diff = Mathf.Max (-5f, AngleDiff (angle, DirectionAxis));
+					float diff = Mathf.Max (-2f, AngleDiff (angle, DirectionAxis));
 					transform.Rotate (new Vector3 (0, diff, 0));
 					wheelL.transform.Rotate (new Vector3 (diff, 0, 0));
 					wheelR.transform.Rotate (new Vector3 (-diff, 0, 0));
@@ -132,10 +132,10 @@ public class PlayerAnimation : MonoBehaviour {
 			//押している間加速
 
 			if (Input.GetKey ("s")) {
-				if (speed > 0.0f) {
+				if (speed > 3.0f) {
 					speed -= 4.0f * Time.deltaTime;
-				} else if (speed < 0.0f) {
-					speed = 0.0f;
+				} else if (speed < 3.0f) {
+					speed = 3.0f;
 				}
 			}
 			//ブレーキ（後退はしない）

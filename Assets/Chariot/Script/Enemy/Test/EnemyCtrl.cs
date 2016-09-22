@@ -184,9 +184,9 @@ public class EnemyCtrl : MonoBehaviour {
 
 	//BulletDamageAreaスクリプトから、HitArea経由でダメージを引っ張ってくる
 	//void Damage(BulletDamageArea.AttackInfo attackInfo)
-	void Damage(AttackInfo attackInfo)
+	void Damage(int attackInfo)
 	{
-		status.HP -= attackInfo.bulletPower;//当たった弾の攻撃力分HPを減らす
+		status.HP -= attackInfo;//当たった弾の攻撃力分HPを減らす
 		if (status.HP <= 0) {
 			status.HP = 0;
 			// 体力０なので死亡
