@@ -17,9 +17,9 @@ public class PlayerCtrl : MonoBehaviour {
 
 
 	//AttackAreaスクリプトから、PlayerHitArea経由でダメージを引っ張ってくる
-	void Damage(AttackArea.AttackInfo attackInfo)
+	void Damage(int power)
 	{
-		status.HP -= attackInfo.attackPower;//当たった攻撃の攻撃力分HPを減らす
+		status.HP -= power;//当たった攻撃の攻撃力分HPを減らす
 		if (status.HP <= 0) {
 			status.HP = 0;
 			// 体力０なので敗北

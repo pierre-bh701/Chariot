@@ -3,8 +3,8 @@ using System.Collections;
 
 public class PlayerHitArea : MonoBehaviour {
 
-	void Damage(AttackArea.AttackInfo attackInfo){
-		transform.root.SendMessage ("Damage", attackInfo);
+	void Damage(int power){
+		transform.root.SendMessage ("Damage", power);
 	}
 }
 

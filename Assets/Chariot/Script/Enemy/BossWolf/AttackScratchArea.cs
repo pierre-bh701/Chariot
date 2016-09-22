@@ -1,28 +1,25 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class AttackArea : MonoBehaviour {
-	
+public class AttackScratchArea : MonoBehaviour {
+
 	//ステータスの数値だけのスクリプト、ここから値を引っ張ってくる
-	EnemyStatus status;
+	EnemyStatusBossWolf status;
 	//攻撃判定のコライダ
 	Collider attackCollider;
-	int power = 5;
+	int attackPower = 10;
 
+	// Use this for initialization
 	void Start () {
 		//ステータスのスクリプトをオブジェクトの親から持ってくる
-		status = transform.root.GetComponent<EnemyStatus> ();
+		status = transform.root.GetComponent<EnemyStatusBossWolf> ();
 		//コライダの取得
 		attackCollider = GetComponent<Collider>();
-	}
-
-	public class AttackInfo{
-		public int attackPower;//この攻撃の攻撃力
-		public Transform attacker;//攻撃者
+		attackCollider.enabled = false;
 	}
 
 	int GetAttackInfo(){
-		return this.power;
+		return this.attackPower;
 	}
 
 	//攻撃が当たった
@@ -43,5 +40,4 @@ public class AttackArea : MonoBehaviour {
 	public void OnAttackTermination(){
 		attackCollider.enabled = false;
 	}
-
 }
