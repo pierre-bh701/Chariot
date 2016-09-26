@@ -18,12 +18,13 @@ public class EnemyAnimationBossWolf : MonoBehaviour {
 	public bool barked = false;
 	public bool downed = false;
 
+	GameObject uiManagement;
+	UIManager uiManager;
+
 	public bool IsAttacked(){
 		return this.attacked;
 	}
-
-	//アニメーションイベントで呼び出す関数、StartAttackHit()、EndAttackHit()、EndAttack()を作成
-	//攻撃判定の有効/無効化を行う
+		
 	void StartAttackHit(){
 		attackArea.OnAttack();
 	}
@@ -63,12 +64,12 @@ public class EnemyAnimationBossWolf : MonoBehaviour {
 	}
 
 	void EndDown(){
-		Debug.Log ("downed");
 		this.downed = true;
 		animator.SetTrigger("Jumping");
 	}
 
 	void BossWolfDead(){
+		uiManager.SetOutBossHP ();
 		Destroy (gameObject);
 	}
 
@@ -78,6 +79,9 @@ public class EnemyAnimationBossWolf : MonoBehaviour {
 		attackArea = GetComponentInChildren<AttackArea> ();
 		attackScratchArea = GetComponentInChildren<AttackScratchArea> ();
 		attackBiteArea = GetComponentInChildren<AttackBiteArea> ();
+
+		uiManagement = GameObject.Find ("UIManagement");
+		uiManager = uiManagement.GetComponent<UIManager> ();
 
 		prePosition = transform.position;
 	}

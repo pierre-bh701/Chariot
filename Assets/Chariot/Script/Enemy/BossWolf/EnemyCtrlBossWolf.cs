@@ -3,7 +3,8 @@ using System.Collections;
 
 public class EnemyCtrlBossWolf : MonoBehaviour {
 
-	EnemyUIManager enemyUIManager;
+	GameObject uiManagement;
+	UIManager uiManager;
 
 	Animator animator;
 	EnemyStatusBossWolf statusBW;
@@ -69,14 +70,14 @@ public class EnemyCtrlBossWolf : MonoBehaviour {
 		//basePosition = transform.position;
 		// 待機時間
 		waitTime = waitBaseTime;
-		enemyUIManager = GetComponent<EnemyUIManager> ();
+		uiManagement = GameObject.Find ("UIManagement");
+		uiManager = uiManagement.GetComponent<UIManager> ();
 		chariot = GameObject.Find ("Chariot");
 		attackTarget = chariot.transform;
+		uiManager.SetInBossHP ();
 	}
 		
 	void Update () {
-
-		Debug.Log (animationBW.scratchJumped);
 
 		switch (state) {
 
@@ -310,13 +311,13 @@ public class EnemyCtrlBossWolf : MonoBehaviour {
 
 			if (animationBW.scratched == true) {
 				if (transform.position.x < 0) {
-					destination = new Vector3 (-20f, transform.position.y, transform.position.z + 20f);
+					destination = new Vector3 (-20f, transform.position.y, attackTarget.position.z);
 					SendMessage ("SetDestination", destination);
 				} else {
-					destination = new Vector3 (20f, transform.position.y, transform.position.z + 20f);
+					destination = new Vector3 (20f, transform.position.y, attackTarget.position.z);
 					SendMessage ("SetDestination", destination);
 				}
-				moveBW.runSpeed = moveBW.maxRunSpeed * 0.8f;
+				moveBW.runSpeed = moveBW.maxRunSpeed * 1.5f;
 				animationBW.scratched = false;
 				animationBW.scratchJumped = false;
 				this.scratchStep++;
@@ -328,6 +329,7 @@ public class EnemyCtrlBossWolf : MonoBehaviour {
 				animator.SetBool ("Scratching", false);
 				destination = transform.position + new Vector3 (0.0f, 0.0f, 100);
 				SendMessage ("SetDestination", destination);
+				moveBW.runSpeed = moveBW.maxRunSpeed * 0.8f;
 				this.waitTime = this.waitBaseTime;
 				this.scratchStep = 0;
 				ChangeState (State.Running);
@@ -406,7 +408,6 @@ public class EnemyCtrlBossWolf : MonoBehaviour {
 			break;
 		case 4:
 			// Jumpで戻る
-			Debug.Log("through");
 			if(moveBW.arrived){
 				animator.SetBool ("ChaseScratching", false);
 				animationBW.scratchJumped = false;
@@ -427,13 +428,23 @@ public class EnemyCtrlBossWolf : MonoBehaviour {
 			// アニメーション切り替え、目的地と速さの初期化
 			animator.SetBool ("Crossing", true);
 			if (transform.position.x < 0) {
-				destination = new Vector3 (20f, transform.position.y, transform.position.z + 50f);
-				SendMessage ("SetDestination", destination);
+				if (transform.position.z - attackTarget.position.z > 20f) {
+					destination = new Vector3 (19f, transform.position.y, transform.position.z + 50f);
+					SendMessage ("SetDestination", destination);
+				} else {
+					destination = new Vector3 (19f, transform.position.y, attackTarget.position.z + 20f);
+					SendMessage ("SetDestination", destination);
+				}
 			} else {
-				destination = new Vector3 (-20f, transform.position.y, transform.position.z + 50f);
-				SendMessage ("SetDestination", destination);
+				if (transform.position.z - attackTarget.position.z > 20f) {
+					destination = new Vector3 (-19f, transform.position.y, transform.position.z + 50f);
+					SendMessage ("SetDestination", destination);
+				} else {
+					destination = new Vector3 (-19f, transform.position.y, attackTarget.position.z + 20f);
+					SendMessage ("SetDestination", destination);
+				}
 			}
-			moveBW.runSpeed = moveBW.maxRunSpeed * 1.2f;
+			moveBW.runSpeed = moveBW.maxRunSpeed * 2.0f;
 			this.crossStep++;
 			break;
 		case 1:
@@ -473,7 +484,6 @@ public class EnemyCtrlBossWolf : MonoBehaviour {
 			animator.SetBool ("AttackScratch", false);
 			if(animationBW.scratchJumped == false){
 				transform.position = new Vector3 (transform.position.x, transform.position.y, attackTarget.position.z - 4f);
-				transform.LookAt (attackTarget);
 			}
 			transform.LookAt (attackTarget);
 			if (animationBW.scratched == true) {
@@ -632,6 +642,7 @@ public class EnemyCtrlBossWolf : MonoBehaviour {
 	void Damage(int attackInfo)
 	{
 		statusBW.HP -= attackInfo;//当たった弾の攻撃力分HPを減らす
+		uiManager.UpdateBossHP(statusBW.HP,statusBW.maxHP);
 		if (statusBW.HP <= 0) {
 			statusBW.HP = 0;
 			ChangeState(State.Died);
@@ -728,6 +739,7 @@ public class EnemyCtrlBossWolf : MonoBehaviour {
 		moveBW.StopMove();
 		//SendMessage("StopMove");
 	}
+		
 
 	// 攻撃対象を設定する
 	public void SetAttackTarget(Transform target){
@@ -736,14 +748,14 @@ public class EnemyCtrlBossWolf : MonoBehaviour {
 
 	void HitAreaBodyOff(){
 		hitAreaBody.enabled = false;
-		Invoke("HitAreaBodyOn", 0.01f);
+		Invoke("HitAreaBodyOn", 0.1f);
 	}
 	void HitAreaBodyOn(){
 		hitAreaBody.enabled = true;
 	}
 	void HitAreaHeadOff(){
 		hitAreaHead.enabled = false;
-		Invoke("HitAreaHeadOn", 0.01f);
+		Invoke("HitAreaHeadOn", 0.1f);
 	}
 	void HitAreaHeadOn(){
 		hitAreaHead.enabled = true;
