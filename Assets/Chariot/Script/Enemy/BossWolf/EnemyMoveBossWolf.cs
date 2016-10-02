@@ -4,7 +4,7 @@ using System.Collections;
 public class EnemyMoveBossWolf : MonoBehaviour {
 
 	const float GravityPower = 9.8f;//重力値
-	const float StoppingDistance = 0.6f;//目的地に着いたとみなす停止距離
+	const float StoppingDistance = 3f;//目的地に着いたとみなす停止距離 0.6f
 
 	Vector3 velocity = Vector3.zero;//現在の移動速度（読み取り用、これに応じてモーションを変えたりする）
 	CharacterController characterController;//キャラクターコントローラーのキャッシュ

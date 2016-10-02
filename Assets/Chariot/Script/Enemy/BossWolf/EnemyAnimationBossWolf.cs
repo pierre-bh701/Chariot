@@ -21,6 +21,9 @@ public class EnemyAnimationBossWolf : MonoBehaviour {
 	GameObject uiManagement;
 	UIManager uiManager;
 
+	GameObject camera;
+	FollowCamera followCamera;
+
 	public bool IsAttacked(){
 		return this.attacked;
 	}
@@ -69,6 +72,7 @@ public class EnemyAnimationBossWolf : MonoBehaviour {
 	}
 
 	void BossWolfDead(){
+		followCamera.CameraNoLookAt (1f);
 		uiManager.SetOutBossHP ();
 		Destroy (gameObject);
 	}
@@ -82,6 +86,8 @@ public class EnemyAnimationBossWolf : MonoBehaviour {
 
 		uiManagement = GameObject.Find ("UIManagement");
 		uiManager = uiManagement.GetComponent<UIManager> ();
+		camera = GameObject.Find ("Camera");
+		followCamera = camera.GetComponent<FollowCamera> ();
 
 		prePosition = transform.position;
 	}

@@ -17,6 +17,11 @@ public class UIManager : MonoBehaviour {
 	int currentBulletNum = 0;
 	int previousBulletNum = 2;
 	private bool bulletChanging = false;
+	public GameObject enemiesCount;
+	public GameObject timeViewer;
+	StageGenerator stageGenerator;
+
+	float startTime = 0;
 
 	/* 今後実装するもの
 	 * Score
@@ -29,13 +34,14 @@ public class UIManager : MonoBehaviour {
 	 */
 
 	void Start () {
-		
+		stageGenerator = GameObject.Find ("StageManagement").GetComponent<StageGenerator> ();
 	}
 
 	void Update () {
 
 		//ゲーム開始用
-		if(imagePressSpaceKey && Input.GetKey(KeyCode.Space)){
+		if(imagePressSpaceKey && Input.anyKey){
+			this.startTime = Time.time;
 			Destroy (imagePressSpaceKey);
 		}
 		if(imagePressSpaceKey){
@@ -48,6 +54,14 @@ public class UIManager : MonoBehaviour {
 				}
 				blinkNextTime += blinkInterval;
 			}
+		}
+
+		//敵数カウント更新
+		UpdateEnemiesCount();
+
+		//時間更新
+		if(startTime != 0){
+			UpdateTimeViewer ();
 		}
 
 		//砲弾種変更用
@@ -91,4 +105,13 @@ public class UIManager : MonoBehaviour {
 		bulletViewer [currentBulletNum].GetComponent<Image> ().color = new Color32 (255, 255, 255, 255);
 	}
 
+	public void UpdateEnemiesCount(){
+		this.enemiesCount.GetComponent<Text> ().text = "(倒した数 / 現れた数) = " + stageGenerator.defeatedEnemies + " / " + stageGenerator.generatedEnemies;
+	}
+
+	public void UpdateTimeViewer(){
+		int minite = (int)((Time.time - this.startTime) / 60);
+		float second = (Time.time - this.startTime) - minite * 60;
+		this.timeViewer.GetComponent<Text> ().text = string.Format("経過時間 {0:00}:{1:00.000}", minite, second);
+	}
 }

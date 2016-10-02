@@ -9,8 +9,11 @@ public class StageGenerator : MonoBehaviour {
 	const int StageTipSize = 500;//ステージチップの大きさ
 
 	public int currentTipIndex;
-	public static int phaseCount = 0; //フェイズ進行度、？全ステージ通し番号？、敵消滅数にしたがってカウントアップ
-	public static int destroyedEnemies; //敵消滅数、EnemyCtrl,AutoEnemyDestroyでカウントアップ
+	public int phaseCount = 0; //フェイズ進行度、？全ステージ通し番号？、敵消滅数にしたがってカウントアップ
+	public int generatedEnemies; //敵生成数
+	public int phaseDestroyedEnemies; //フェーズ敵消滅数、EnemyCtrl,AutoEnemyDestroyでカウントアップ
+	public int destroyedEnemies; //敵消滅数
+	public int defeatedEnemies; //敵撃破数
 
 	public Transform character;//ターゲットキャラクターの指定
 	public GameObject[] stageTips;//ステージチッププレハブ配列
@@ -30,7 +33,10 @@ public class StageGenerator : MonoBehaviour {
 	void Update () {
 
 		if(phaseCount==0){
-			if(Input.GetKey(KeyCode.Space)){
+			if(Input.anyKey){
+				GenerateEnemyGenerator ((int)(character.position.z + 400), StageTipSize);
+				GenerateEnemyGenerator ((int)(character.position.z + 900), StageTipSize);
+				GenerateEnemyGenerator ((int)(character.position.z + 1400), StageTipSize);
 				phaseCount++;
 			}
 			//ステージチップの更新処理
@@ -40,18 +46,30 @@ public class StageGenerator : MonoBehaviour {
 			}
 		}
 
-		if(phaseCount >= 1 && phaseCount <= 3){
+		if (phaseCount >= 1 && phaseCount <= 3) {
 			//敵消滅数が定数以上ならnextStageTipを更新、？定数はステージやフェイズによって変更？
-			if(destroyedEnemies >= 20 && phaseCount < 3){
+			if (phaseDestroyedEnemies >= PhaseCountToEnemyDestroyNorma (phaseCount) && phaseCount < 4) {
 				phaseCount++;
-				destroyedEnemies = 0;
+				phaseDestroyedEnemies = 0;
 			}
 
 			//キャラクターの位置から現在のステージチップのインデックスを計算
 			int charaPositionIndex = (int)(character.position.z / StageTipSize);
 
 			//次のステージチップに入ったらステージの更新処理を行う
-			if (charaPositionIndex + preInstantiate > currentTipIndex){
+			if (charaPositionIndex + preInstantiate > currentTipIndex) {
+				UpdateStage (charaPositionIndex + preInstantiate);
+			}
+		} else if (phaseCount == 4) {
+			//生成済みの敵が全て消滅したらボス生成
+			if(destroyedEnemies == generatedEnemies){
+				Instantiate (enemyGenerator [PhaseCountToEnemyIndex (phaseCount)], new Vector3 (-20, 0.73f, character.position.z), Quaternion.Euler (0, 0, 0));
+				generatedEnemies++;
+			}
+
+			//ステージ更新処理
+			int charaPositionIndex = (int)(character.position.z / StageTipSize);
+			if (charaPositionIndex + preInstantiate > currentTipIndex) {
 				UpdateStage (charaPositionIndex + preInstantiate);
 			}
 		}
@@ -97,13 +115,47 @@ public class StageGenerator : MonoBehaviour {
 
 	//エネミージェネレータを生成（現在3×4で12個、ステージを長方形区間に分割して１つずつランダムに配置）
 	void GenerateEnemyGenerator(int stagez, int stagesize){
-		for(int i=0;i<3;i++){
-			for(int j=0;j<6;j++){
-				float randomx = -20f + 13.3f * i + 13.3f * Random.value;
-				float randomz = stagez - 0.5f * stagesize + 83.3f * j + 83.3f * Random.value;
-				float randomr = -120f + 60f * Random.value;
-				Instantiate(enemyGenerator[PhaseCountToEnemyIndex(phaseCount)], new Vector3(randomx,0.73f,randomz), Quaternion.Euler(0,randomr,0));
+		switch (phaseCount) {
+		case 0:
+			for (int i = 0; i < 2; i++) {
+				for (int j = 0; j < 3; j++) {
+					float randomx = -20f + (float)40 / 2 * (i + Random.value);
+					float randomz = stagez - 0.5f * stagesize + (float)stagesize / 3 * (j + Random.value);
+					float randomr = -120f + 60f * Random.value;
+					Instantiate (enemyGenerator [PhaseCountToEnemyIndex (phaseCount)], new Vector3 (randomx, 0.73f, randomz), Quaternion.Euler (0, randomr, 0));
+				}
 			}
+			break;
+		case 1:
+			for (int i = 0; i < 2; i++) {
+				for (int j = 0; j < 3; j++) {
+					float randomx = -20f + (float)40 / 2 * (i + Random.value);
+					float randomz = stagez - 0.5f * stagesize + (float)stagesize / 3 * (j + Random.value);
+					float randomr = -120f + 60f * Random.value;
+					Instantiate (enemyGenerator [PhaseCountToEnemyIndex (phaseCount)], new Vector3 (randomx, 0.73f, randomz), Quaternion.Euler (0, randomr, 0));
+				}
+			}
+			break;
+		case 2:
+			for (int i = 0; i < 3; i++) {
+				for (int j = 0; j < 4; j++) {
+					float randomx = -20f + (float)40 / 3 * (i + Random.value);
+					float randomz = stagez - 0.5f * stagesize + (float)stagesize / 4 * (j + Random.value);
+					float randomr = -120f + 60f * Random.value;
+					Instantiate (enemyGenerator [PhaseCountToEnemyIndex (phaseCount)], new Vector3 (randomx, 0.73f, randomz), Quaternion.Euler (0, randomr, 0));
+				}
+			}
+			break;
+		case 3:
+			for (int i = 0; i < 3; i++) {
+				for (int j = 0; j < 6; j++) {
+					float randomx = -20f + (float)40 / 3 * (i + Random.value);
+					float randomz = stagez - 0.5f * stagesize + (float)stagesize / 6 * (j + Random.value);
+					float randomr = -120f + 60f * Random.value;
+					Instantiate (enemyGenerator [PhaseCountToEnemyIndex (phaseCount)], new Vector3 (randomx, 0.73f, randomz), Quaternion.Euler (0, randomr, 0));
+				}
+			}
+			break;
 		}
 	}
 
@@ -131,7 +183,25 @@ public class StageGenerator : MonoBehaviour {
 			return 1;
 		case 3:
 			return 2;
+		case 4:
+			return 3;
 		}
 		return 0;
+	}
+
+	// フェイズに応じてエネミー消滅数のノルマを返す
+	int PhaseCountToEnemyDestroyNorma(int phase){
+		switch (phase) {
+		case 1:
+			return 6;
+		case 2:
+			return 12;
+		case 3:
+			return 18;
+		case 4:
+			return 1;
+		default:
+			return 0;
+		}
 	}
 }

@@ -42,31 +42,31 @@ public class CameraAndShotController : MonoBehaviour {
 
 
 	void Update () {
-
+			
 		Vector2 mouse = Input.mousePosition;
 		delta = Vector2.zero;
 
-		if( mouse.y > up ){
+		if (mouse.y > up) {
 			moved = true;
-			Vector2 diff = mouse - new Vector2(mouse.x, up);
+			Vector2 diff = mouse - new Vector2 (mouse.x, up);
 			delta += diff * 0.1f;
 		}
 
-		if( mouse.y < down ){
+		if (mouse.y < down) {
 			moved = true;
-			Vector2 diff = mouse - new Vector2(mouse.x, down);
+			Vector2 diff = mouse - new Vector2 (mouse.x, down);
 			delta += diff * 0.1f;
 		}
 
-		if( mouse.x < left ){
+		if (mouse.x < left) {
 			moved = true;
-			Vector2 diff = mouse - new Vector2(left, mouse.y);
+			Vector2 diff = mouse - new Vector2 (left, mouse.y);
 			delta += diff * 0.1f;
 		}
-			
-		if( mouse.x > right ){
+		
+		if (mouse.x > right) {
 			moved = true;
-			Vector2 diff = mouse - new Vector2(right, mouse.y);
+			Vector2 diff = mouse - new Vector2 (right, mouse.y);
 			delta += diff * 0.1f;
 		}
 
@@ -75,15 +75,12 @@ public class CameraAndShotController : MonoBehaviour {
 			moved = false;
 		}
 
-	/*
-	}
+		/*
+}
 
-	void LateUpdate (){
-	*/
-		//Raycast output storage variable
+void LateUpdate (){
+*/
 		RaycastHit hit;
-
-		//Raycast at mouse position
 		ray = TPcamera.ScreenPointToRay (Input.mousePosition); //カメラからマウスカーソルの向きにRay
 		if (Physics.Raycast (ray, out hit, 300.0f, layerMask)) {
 			LookAtPos = hit.point;      //Player以外のObjectを見つけた時

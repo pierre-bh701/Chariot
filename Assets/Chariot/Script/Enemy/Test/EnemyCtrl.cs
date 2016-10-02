@@ -5,6 +5,9 @@ public class EnemyCtrl : MonoBehaviour {
 
 	EnemyUIManager enemyUIManager;
 
+	GameObject stageManagement;
+	StageGenerator stageGenerator;
+
 	EnemyStatus status;
 	EnemyAnimation enemyAnimation;
 	EnemyMove enemyMove;
@@ -43,6 +46,8 @@ public class EnemyCtrl : MonoBehaviour {
 		// 待機時間
 		waitTime = waitBaseTime;
 		enemyUIManager = GetComponent<EnemyUIManager> ();
+		stageManagement = GameObject.Find ("StageManagement");
+		stageGenerator = stageManagement.GetComponent<StageGenerator> ();
 	}
 
 	// Update is called once per frame
@@ -175,10 +180,11 @@ public class EnemyCtrl : MonoBehaviour {
 	void Died()
 	{
 		status.died = true;
-		StageGenerator.destroyedEnemies++; //敵消滅数をカウントアップ、！本当はアニメーションが終わる時にしたい！
+		stageGenerator.defeatedEnemies++;
+		stageGenerator.phaseDestroyedEnemies++;
+		stageGenerator.destroyedEnemies++; //敵消滅数をカウントアップ、！本当はアニメーションが終わる時にしたい！
 		UIManager.knockedOutEnemies++; //敵撃破数をカウントアップ、！アニメーションの最後に入れたい！
 		Destroy(enemyUIManager.enemyHPGage);
-		Debug.Log(UIManager.knockedOutEnemies+"Hit");
 		Destroy(gameObject);//倒れるアニメーションが無い為(ある場合は、Enemystatus経由でEnemyAnimationへ、倒れるアニメーション後にEnemy消失)
 	}
 
