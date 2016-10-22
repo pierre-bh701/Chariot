@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: bdad80bc46f224be2a2e5f8fa298f105
-timeCreated: 1475856371
+guid: eab1c2552d3984ba489c3dfd52b73441
+timeCreated: 1476084076
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -362,8 +362,8 @@ ModelImporter:
     4300020: Rulu_leg
     4300022: Rulu_shirt&arm
     4300024: Rulu_wear
-    7400000: armature|armatureAction
-    7400002: metarig|metarigAction
+    7400000: armature|Deceleration_Panzer
+    7400002: metarig|Deceleration_Rulu
     9500000: //RootNode
     13700000: body
     13700002: cokpit
