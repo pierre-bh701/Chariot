@@ -49,25 +49,25 @@ public class CameraAndShotController : MonoBehaviour {
 		if (mouse.y > up) {
 			moved = true;
 			Vector2 diff = mouse - new Vector2 (mouse.x, up);
-			delta += diff * 0.1f;
+			delta += diff * 0.01f;
 		}
 
 		if (mouse.y < down) {
 			moved = true;
 			Vector2 diff = mouse - new Vector2 (mouse.x, down);
-			delta += diff * 0.1f;
+			delta += diff * 0.01f;
 		}
 
 		if (mouse.x < left) {
 			moved = true;
 			Vector2 diff = mouse - new Vector2 (left, mouse.y);
-			delta += diff * 0.1f;
+			delta += diff * 0.03f;
 		}
 		
 		if (mouse.x > right) {
 			moved = true;
 			Vector2 diff = mouse - new Vector2 (right, mouse.y);
-			delta += diff * 0.1f;
+			delta += diff * 0.03f;
 		}
 
 		if (mouse.y < up && mouse.y > down && mouse.x > left && mouse.x < right) {
