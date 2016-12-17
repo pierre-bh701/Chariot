@@ -4,6 +4,8 @@ using UnityEngine.SceneManagement;
 
 public class SceneChange : MonoBehaviour {
 
+    public string SceneNameOfSwitch;
+
 	// Use this for initialization
 	void Start () {
 	
@@ -13,7 +15,7 @@ public class SceneChange : MonoBehaviour {
 	void Update () {
 	    if (Input.anyKey)
         {
-            SceneManager.LoadScene("Stage1");
+            SceneManager.LoadScene(SceneNameOfSwitch);
         }
 	}
 }
